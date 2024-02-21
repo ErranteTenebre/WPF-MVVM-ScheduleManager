@@ -1,0 +1,120 @@
+﻿<Window x:Class="MVVM_WPF_Schedule.Views.Popup.TeacherPopups.AddTeacherPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:MVVM_WPF_Schedule.WpfInfrastructure.Converters"
+        mc:Ignorable="d"
+        Title="Авторизация" Height="550" Width="800"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True"
+        MouseDown="Window_MouseDown"
+        d:DataContext="{d:DesignInstance viewModel:AddTeacherViewModel}"
+        >
+    <Window.Resources>
+        <converters:IntToStringConverter x:Key="IntToStringConverter"></converters:IntToStringConverter>
+    </Window.Resources>
+
+    <Border Style="{StaticResource WindowOuterBorder}">
+        <Border.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Images/katk.jpg"
+                      Stretch="Fill"/>
+        </Border.Background>
+        <Border Style="{DynamicResource WindowInnerBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="25"></ColumnDefinition>
+                        <ColumnDefinition Width="25"></ColumnDefinition>
+                        <ColumnDefinition Width="5"></ColumnDefinition>
+                        
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="pack://application:,,,/Images/logo.png" Width="100" Height="100" VerticalAlignment="Center"/>
+
+                    <TextBlock Style="{StaticResource CustomTitleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="0 0 45 0">Добавление преподавателя</TextBlock>
+
+                    <Button
+    x:Name="btnMinimize"
+    Grid.Column="2"
+    Style="{DynamicResource MinimizeButtonStyle}"
+    Content="-">
+                    </Button>
+
+                    <Button x:Name="btnClose"            
+    Grid.Column="3"
+    Content="X"
+    Style="{DynamicResource CloseButtonStyle}"
+    Click="btnClose_Click" HorizontalAlignment="Left" Margin="4,41,0,41" Width="18">
+                    </Button>
+                </Grid>
+
+                <StackPanel Grid.Row="1" Margin="20 50 20 0">
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                        <TextBlock Style="{StaticResource MediumTxt}"
+               Width="300">ФИО:</TextBlock>
+                        <TextBox Text="{Binding Teacher.FIO, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+             Style="{DynamicResource CustomTextBoxStyle}"
+                              
+Width="300"
+Background="Transparent"
+Margin="10,0,0,0"
+TabIndex="1">
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                        <TextBlock Style="{StaticResource MediumTxt}"
+               Width="300">Телефон:</TextBlock>
+                        <TextBox Text="{Binding Teacher.Phone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+             Style="{DynamicResource CustomTextBoxStyle}"
+                              
+Width="300"
+Background="Transparent"
+Margin="10,0,0,0"
+TabIndex="1">
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                        <TextBlock Style="{StaticResource MediumTxt}"
+               Width="300">Рабочая нагрузка:</TextBlock>
+                        <TextBox Text="{Binding Teacher.Workload, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource IntToStringConverter}}"
+             Style="{DynamicResource CustomTextBoxStyle}"
+                              
+Width="300"
+Background="Transparent"
+Margin="10,0,0,0"
+TabIndex="1">
+                        </TextBox>
+                    </StackPanel>
+
+                    <TextBlock x:Name="txtError"
+                               Style="{StaticResource ErrorTextStyle}"
+                               Margin="0 10 0 0"
+                               Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBlock>
+                    <Button x:Name="addBtn"
+                            Style="{StaticResource CustomButtonStyle}"
+                            Width="200"
+                            Height="40"
+                            HorizontalAlignment="Center"
+                            Margin="0 20 0 0"
+                            Command="{Binding AddCommand}"
+                            Content="Добавить">
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Border>
+</Window>
+
+

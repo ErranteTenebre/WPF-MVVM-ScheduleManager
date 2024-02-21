@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="MVVM_WPF_Schedule.Views.Pages.Secretary.SpecialtiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             mc:Ignorable="d" 
+             d:DesignHeight="618" d:DesignWidth="1028"
+             d:DataContext="{d:DesignInstance secretary:SpecialtiesViewModel}"
+             >
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <TextBox Style="{StaticResource CustomTextBoxStyle}"
+                         Width="200"
+                         Height="40"
+                         Background="Transparent"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+
+                </TextBox>
+                <fa:IconImage Icon="Search" Style="{StaticResource Icon}" Foreground="{StaticResource color6}" />
+
+                <fa:IconImage Icon="Refresh" Style="{StaticResource Icon}" Foreground="{StaticResource color10}"
+                              Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ClearFilters}" />
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+            </StackPanel>
+
+            
+            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                <fa:IconImage Icon="Book" Style="{StaticResource Icon}" Foreground="{StaticResource color8}">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding OpenSpecialtiesDisciplinesView}" />
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+
+                <fa:IconImage Icon="Edit" Style="{StaticResource Icon}" Foreground="{StaticResource color6}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding EditSpecialtyCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+                <fa:IconImage Icon="Trash" Style="{StaticResource Icon}" Foreground="{StaticResource color8}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding RemoveSpecialtyCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+                <fa:IconImage Icon="Add" Style="{StaticResource Icon}" Foreground="{StaticResource color10}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding AddSpecialtyCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid Height="250"
+                  Style="{StaticResource DataGridStyle}"
+                  ItemsSource="{Binding DataToView}"
+                  Margin="0 10 0 0"
+                  SelectedItem="{Binding SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Код специальности" Binding="{Binding Code}" Width="2*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="5*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Аббревиатура" Binding="{Binding Acronym}" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+
+        <DataGrid Height="250"
+                  Style="{StaticResource DataGridStyle}"
+                  ItemsSource="{Binding DisciplinesToView}"
+                  Margin="0 50 0 0"
+                  SelectedItem="{Binding SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название предмета" Width="*" Binding="{Binding Discipline.Name }"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</UserControl>
+
+

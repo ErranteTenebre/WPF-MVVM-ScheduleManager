@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="MVVM_WPF_Schedule.Views.Pages.Secretary.SpecialtyDisciplinesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             mc:Ignorable="d" 
+             d:DesignHeight="518" d:DesignWidth="1028"
+             d:DataContext="{d:DesignInstance vm:SpecialtyDisciplinesViewModel}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
+    </UserControl.Resources>
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+
+                <TextBlock Style="{StaticResource CustomTextBlockStyle}"
+                           Text="{Binding SelectedSpecialty.Name}"
+                           Margin="20 0 0 0"></TextBlock>
+                             
+            </StackPanel>
+
+            
+            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+
+                <fa:IconImage Icon="Edit" Style="{StaticResource Icon}" Foreground="{StaticResource color6}"
+                              Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding EditCommand}" />
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+
+                <fa:IconImage Icon="Trash" Style="{StaticResource Icon}" Foreground="{StaticResource color8}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding DeleteCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+
+                <fa:IconImage Icon="Add" Style="{StaticResource Icon}" Foreground="{StaticResource color10}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding AddCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid Style="{StaticResource DataGridStyle}"
+                  Height="250"
+                  Margin="0 20 0 0"
+                  ItemsSource="{Binding SpecialtyDisciplinesList}"
+                  SelectedItem="{Binding SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название дисциплины" Width="3*" Binding="{Binding Discipline.Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Учебная нагрузка(ч)" Width="*" Binding="{Binding HoursCountPerWeek}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="0 20 0 0">
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>
+
+

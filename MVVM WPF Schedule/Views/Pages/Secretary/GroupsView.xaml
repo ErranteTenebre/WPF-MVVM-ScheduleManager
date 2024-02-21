@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="MVVM_WPF_Schedule.Views.Pages.Secretary.GroupsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:cmb="clr-namespace:MVVM_WPF_Schedule.Models.Cmb"
+             xmlns:secretary="clr-namespace:MVVM_WPF_Schedule.Views.Pages.Secretary"
+             xmlns:secretary1="clr-namespace:MVVM_WPF_Schedule.ViewModels.Pages.Secretary"
+             mc:Ignorable="d" 
+             d:DesignHeight="618" d:DesignWidth="1028"
+             d:DataContext="{d:DesignInstance secretary1:GroupsViewModel}">
+    <UserControl.Resources>
+        <x:Array x:Key="ComboBoxItems" Type="cmb:ComboBoxItemData">
+            <cmb:ComboBoxItemData DisplayText="Бюджетная" Value="True" />
+            <cmb:ComboBoxItemData DisplayText="Не бюджетная" Value="False" />
+        </x:Array>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <TextBox Style="{StaticResource CustomTextBoxStyle}"
+                         Width="200"
+                         Height="40"
+                         Background="Transparent"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+
+                </TextBox>
+                <fa:IconImage Icon="Search" Style="{StaticResource Icon}" Foreground="{StaticResource color6}">
+                </fa:IconImage>
+
+                <ComboBox Style="{StaticResource CustomCmbStyle}"
+          Width="200"
+          Margin="10 0 0 0"
+          ItemsSource="{Binding SpecialtyList}"
+          DisplayMemberPath="Name"
+          SelectedValuePath="Code"
+          SelectedValue="{Binding SpecialtyCode}"/>
+                <ComboBox Style="{StaticResource CustomCmbStyle}"
+Width="200"
+Margin="10 0 0 0"
+ItemsSource="{StaticResource ComboBoxItems}"
+DisplayMemberPath="DisplayText"
+SelectedValuePath="Value"
+SelectedValue="{Binding IsBudget}"/>
+
+                <fa:IconImage Icon="Refresh" Style="{StaticResource Icon}" Foreground="{StaticResource color10}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ClearFilters}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+            </StackPanel>
+       
+            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                <fa:IconImage Icon="Book" Style="{StaticResource Icon}" Foreground="{StaticResource color8}">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ShowGroupDisciplinesViewCommand}" />
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+
+                <fa:IconImage Icon="Edit" Style="{StaticResource Icon}" Foreground="{StaticResource color6}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding EditCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+                <fa:IconImage Icon="Trash" Style="{StaticResource Icon}" Foreground="{StaticResource color8}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding RemoveCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+                <fa:IconImage Icon="Add" Style="{StaticResource Icon}" Foreground="{StaticResource color10}" Margin="20 0 0 0">
+                    <fa:IconImage.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding AddCommand}"/>
+                    </fa:IconImage.InputBindings>
+                </fa:IconImage>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid Height="250"
+                  Style="{StaticResource DataGridStyle}"
+                  ItemsSource="{Binding DataToView}"
+                  Margin="0 10 0 0"
+                  SelectedItem="{Binding SelectedItem}">
+            <DataGrid.Resources>
+                <secretary:BoolToGroupConverter x:Key="BoolToGroupConverter" />
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Номер группы" Binding="{Binding Number}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Специальность" Binding="{Binding Specialty.Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Год поступления" Binding="{Binding AdmissionYear}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Бюджетная/Не бюджетная" Binding="{Binding IsBudget, Converter={StaticResource BoolToGroupConverter}}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid Height="250"
+                  Style="{StaticResource DataGridStyle}"
+                  ItemsSource="{Binding GroupDisciplineList}"
+                  Margin="0 50 0 0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дисциплина" Width="*" Binding="{Binding Discipline.Name}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+</UserControl>
+
+
