@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CursachApp"
              xmlns:base="clr-namespace:MVVM_WPF_Schedule.ViewModels.Base"
-             StartupUri="/Views/Windows/SecretaryForm.xaml"
+             StartupUri="/Views/Windows/MainWindow.xaml"
              >
     <Application.Resources>
         <ResourceDictionary>
