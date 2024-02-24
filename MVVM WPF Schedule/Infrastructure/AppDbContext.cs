@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using MVVM_WPF_Schedule.Infrastructure.DataSeeders;
 using MVVM_WPF_Schedule.Infrastructure.EntityConfigurations;
 using MVVM_WPF_Schedule.Models.Entities;
+using System.IO;
 using DayOfWeek = MVVM_WPF_Schedule.Models.Entities.DayOfWeek;
 
 namespace MVVM_WPF_Schedule.Infrastructure;
@@ -42,5 +45,22 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ScheduleItemDataSeeder());
 
         base.OnModelCreating(modelBuilder);
+    }
+}
+
+public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+{
+    public AppDbContext CreateDbContext(string[] args)
+    {
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+
+        return new AppDbContext(optionsBuilder.Options);
     }
 }

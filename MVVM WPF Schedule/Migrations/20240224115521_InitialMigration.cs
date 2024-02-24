@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace CursachApp.Migrations
+namespace MVVM_WPF_Schedule.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
