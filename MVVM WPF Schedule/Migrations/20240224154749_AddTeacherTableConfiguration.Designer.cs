@@ -4,6 +4,7 @@ using MVVM_WPF_Schedule.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVVM_WPF_Schedule.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240224154749_AddTeacherTableConfiguration")]
+    partial class AddTeacherTableConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,7 +221,6 @@ namespace MVVM_WPF_Schedule.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("TeacherId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -233,8 +234,6 @@ namespace MVVM_WPF_Schedule.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("GroupsDisciplines");
-
-                    b.HasCheckConstraint("CHK_Hours_Count_Per_Week", "HoursCountPerWeek>0");
 
                     b.HasData(
                         new
@@ -456,8 +455,6 @@ namespace MVVM_WPF_Schedule.Migrations
                     b.HasIndex("GroupDisciplineId");
 
                     b.ToTable("ScheduleItems");
-
-                    b.HasCheckConstraint("CHK_Check_Lesson_Number", "LessonNumber>0 AND LessonNumber<=8");
 
                     b.HasData(
                         new
@@ -1220,9 +1217,7 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.HasOne("MVVM_WPF_Schedule.Models.Entities.Teacher", "Teacher")
                         .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeacherId");
 
                     b.Navigation("Discipline");
 

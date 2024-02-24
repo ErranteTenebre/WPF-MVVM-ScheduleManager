@@ -18,14 +18,6 @@ public class SecretaryViewModel : ViewModelBase
 {
     private IUserRepository _userRepository;
     private SecretaryNavigationService _secretaryNavigationService;
-    private UserControl _currentChildView;
-    private string _caption;
-    private IconChar _icon;
-    private bool isHomeViewChecked = false;
-    private bool isSpecialtiesViewChecked = false;
-    private bool isGroupsViewChecked = false;
-    private bool isTeachersViewChecked = false;
-    private bool isDisciplinesViewChecked = false;
 
     private CurrentUser _currentUser;
 
@@ -42,102 +34,7 @@ public class SecretaryViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    public UserControl CurrentChildView
-    {
-        get
-        {
-            return _currentChildView;
-        }
-        set
-        {
-            _currentChildView = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(CurrentChildView));
-        }
-    }
-    public string Caption
-    {
-        get
-        {
-            return _caption;
-        }
-        set
-        {
-            _caption = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(Caption));
-        }
-    }
-    public IconChar Icon
-    {
-        get
-        {
-            return _icon;
-        }
-        set
-        {
-            _icon = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(Icon));
-        }
-    }
-
-    public bool IsHomeViewChecked
-    {
-        get => isHomeViewChecked;
-        set
-        {
-            if (value == isHomeViewChecked) return;
-            isHomeViewChecked = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsSpecialtiesViewChecked
-    {
-        get => isSpecialtiesViewChecked;
-        set
-        {
-            if (value == isSpecialtiesViewChecked) return;
-            isSpecialtiesViewChecked = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsGroupsViewChecked
-    {
-        get => isGroupsViewChecked;
-        set
-        {
-            if (value == isGroupsViewChecked) return;
-            isGroupsViewChecked = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsDisciplinesViewChecked
-    {
-        get => isDisciplinesViewChecked;
-        set
-        {
-            if (value == isDisciplinesViewChecked) return;
-            isDisciplinesViewChecked = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsTeachersViewChecked
-    {
-        get => isTeachersViewChecked;
-        set
-        {
-            if (value == isTeachersViewChecked) return;
-            isTeachersViewChecked = value;
-            OnPropertyChanged();
-        }
-    }
-
-    //--> Commands
+   
     public ICommand ShowHomeViewCommand { get; }
     public ICommand ShowSpecialtiesViewModel { get; }
     public ICommand ShowGroupsViewModel { get; }
@@ -145,10 +42,20 @@ public class SecretaryViewModel : ViewModelBase
     public ICommand ShowDisciplinesViewModel { get; }
     public ICommand LogOutCommand { get; }
 
+    public SecretaryNavigationService SecretaryNavigationService
+    {
+        get => _secretaryNavigationService;
+        set
+        {
+            if (Equals(value, _secretaryNavigationService)) return;
+            _secretaryNavigationService = value;
+            OnPropertyChanged();
+        }
+    }
+
     public event EventHandler OnDestroy;
         public SecretaryViewModel(IUserRepository userRepository, SecretaryNavigationService secretaryNavigationService)
         {
-            ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowSpecialtiesViewModel = new ViewModelCommand(ExecuteShowSpecialtiesViewModel);
             ShowGroupsViewModel = new ViewModelCommand(ExecuteShowGroupsViewModel);
             ShowTeachersViewModel = new ViewModelCommand(ExecuteShowTeachersViewModel);
@@ -157,34 +64,15 @@ public class SecretaryViewModel : ViewModelBase
             LogOutCommand = new ViewModelCommand(ExecuteLogOutCommand);
 
             _userRepository = userRepository;
-            _secretaryNavigationService = secretaryNavigationService;
-
-            CurrentChildView = secretaryNavigationService.CurrentChildView;
-        secretaryNavigationService.CurrentViewChanged +=
-            (sender, args) =>
-            {
-                CurrentChildView = secretaryNavigationService.CurrentChildView;
-                Caption = secretaryNavigationService.Caption;
-                Icon = secretaryNavigationService.Icon;
-
-                IsHomeViewChecked = _secretaryNavigationService.IsHomeViewChecked;
-                IsSpecialtiesViewChecked = _secretaryNavigationService.IsSpecialtiesViewChecked;
-                IsGroupsViewChecked = _secretaryNavigationService.IsGroupsViewChecked;
-                IsTeachersViewChecked = _secretaryNavigationService.IsTeachersViewChecked;
-                IsDisciplinesViewChecked = _secretaryNavigationService.IsDisciplinesViewChecked;
-            };
+            SecretaryNavigationService = secretaryNavigationService;
+            SecretaryNavigationService.ChangeCurrentChildView(new SpecialtiesView(), "Специальности", IconChar.UserGraduate);
 
         LoadCurrentUserData();
         }
 
-    private Action<string> UpdateChildView()
-    {
-        throw new NotImplementedException();
-    }
-
     private void ExecuteShowDisciplineViewModel(object obj)
     {
-        _secretaryNavigationService.ChangeCurrentChildView(new DisciplinesView(), "Дисциплины", IconChar.Book);
+        SecretaryNavigationService.ChangeCurrentChildView(new DisciplinesView(), "Дисциплины", IconChar.Book);
     }
 
     private void ExecuteLogOutCommand(object obj)
@@ -198,26 +86,21 @@ public class SecretaryViewModel : ViewModelBase
         OnDestroy.Invoke(this, new EventArgs());
     }
 
-    private void ExecuteShowHomeViewCommand(object obj)
-    {
-        _secretaryNavigationService.ChangeCurrentChildView(new HomeView(), "Главная", IconChar.Home);
-    }
-
     private void ExecuteShowSpecialtiesViewModel(object obj)
     {
-        _secretaryNavigationService.ChangeCurrentChildView(new SpecialtiesView(), "Специальности",
+        SecretaryNavigationService.ChangeCurrentChildView(new SpecialtiesView(), "Специальности",
             IconChar.UserGraduate);
     }
 
     private void ExecuteShowGroupsViewModel(object obj)
     {
-        _secretaryNavigationService.ChangeCurrentChildView(new GroupsView(), "Группы",
+        SecretaryNavigationService.ChangeCurrentChildView(new GroupsView(), "Группы",
             IconChar.Users);
     }
 
     private void ExecuteShowTeachersViewModel(object obj)
     {
-        _secretaryNavigationService.ChangeCurrentChildView(new TeachersView(), "Преподаватели",
+        SecretaryNavigationService.ChangeCurrentChildView(new TeachersView(), "Преподаватели",
             IconChar.UserTie);
     }
 
@@ -239,9 +122,9 @@ public class SecretaryViewModel : ViewModelBase
             FIO = user.FIO,
         };
 
-        if (user.AvatarPath != null)
+        if (user.AvatarName != null)
         {
-            byte[] avatar = File.ReadAllBytes(App.CurrentDirectory + "/Images/Avatars/" + user.AvatarPath);
+            byte[] avatar = File.ReadAllBytes(App.CurrentDirectory + "/Images/Avatars/" + user.AvatarName);
             CurrentUser.Avatar = avatar;
         }
     }

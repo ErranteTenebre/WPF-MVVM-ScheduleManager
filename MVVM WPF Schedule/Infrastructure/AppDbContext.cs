@@ -22,14 +22,17 @@ public class AppDbContext : DbContext
     public DbSet<DayOfWeek> DaysOfWeek { get; set; }
     public DbSet<ScheduleItem> ScheduleItems { get; set; }
     public AppDbContext(DbContextOptions options) :base(options) {     
-                                            
     }                                   
                                             
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new PostConfiguration());
+        modelBuilder.ApplyConfiguration(new SpecialtyConfiguration());
         modelBuilder.ApplyConfiguration(new GroupConfiguration());
+        modelBuilder.ApplyConfiguration(new DisciplineConfiguration());
         modelBuilder.ApplyConfiguration(new SpecialtyDisciplinesConfiguration());
+        modelBuilder.ApplyConfiguration(new TeacherConfiguration());
         modelBuilder.ApplyConfiguration(new GroupDisciplineConfiguration());
         modelBuilder.ApplyConfiguration(new ScheduleItemConfiguration());
 
@@ -60,6 +63,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+        optionsBuilder.EnableSensitiveDataLogging();
 
         return new AppDbContext(optionsBuilder.Options);
     }

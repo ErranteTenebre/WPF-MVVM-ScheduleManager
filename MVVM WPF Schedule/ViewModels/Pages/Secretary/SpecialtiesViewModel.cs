@@ -159,7 +159,11 @@ public class SpecialtiesViewModel : ViewModelBase
 
     private bool CanExecuteEditSpecialtyCommand(object obj)
     {
-        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder) return false;
+        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder)
+        {
+            MessageBox.Show("Выберите дисциплину");
+            return false;
+        }
         return true;
     }
 
@@ -179,7 +183,11 @@ public class SpecialtiesViewModel : ViewModelBase
 
     private bool CanExecuteRemoveSpecialtyCom(object obj)
     {
-        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder) return false;
+        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder)
+        {
+            MessageBox.Show("Выберите преподавателя");
+            return false;
+        }
         return true;
     }
 

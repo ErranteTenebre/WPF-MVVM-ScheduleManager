@@ -8,13 +8,20 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
 {
     public void Configure(EntityTypeBuilder<Group> builder)
     {
-        builder.HasOne(g=> g.Specialty)
+        builder.HasKey(e => e.Number);
+
+        builder.Property(p => p.SpecialtyCode)
+            .IsRequired()
+            .HasMaxLength(50);
+
+        builder.Property(e => e.IsBudget)
+            .IsRequired();
+
+        builder.Property(e => e.AdmissionYear)
+            .IsRequired();
+
+        builder.HasOne(g => g.Specialty)
             .WithMany()
             .HasForeignKey(g => g.SpecialtyCode);
-
-        builder.HasMany(group => group.GroupDisciplines)
-            .WithOne(groupDiscipline => groupDiscipline.Group)
-            .HasForeignKey(groupDiscipline => groupDiscipline.GroupNumber)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

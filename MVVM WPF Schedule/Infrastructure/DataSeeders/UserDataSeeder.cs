@@ -17,7 +17,7 @@ public class UserDataSeeder : IEntityTypeConfiguration<User>
                 Email = "ivanov@example.com",
                 Password = "password123",
                 Login = "ivanov",
-                AvatarPath = "чебупеля.jpg",
+                AvatarName = "чебупеля.jpg",
                 PostId = 1
             },
             new User
@@ -28,7 +28,7 @@ public class UserDataSeeder : IEntityTypeConfiguration<User>
                 Email = "petrov@example.com",
                 Password = "password456",
                 Login = "petrov",
-                AvatarPath = "чебупеля.jpg",
+                AvatarName = "чебупеля.jpg",
                 PostId = 2
             }
         );

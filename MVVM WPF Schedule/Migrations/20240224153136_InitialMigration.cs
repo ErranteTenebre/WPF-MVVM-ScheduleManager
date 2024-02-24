@@ -27,7 +27,7 @@ namespace MVVM_WPF_Schedule.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,7 +40,7 @@ namespace MVVM_WPF_Schedule.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,9 +51,9 @@ namespace MVVM_WPF_Schedule.Migrations
                 name: "Specialties",
                 columns: table => new
                 {
-                    Code = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Acronym = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Acronym = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,12 +81,12 @@ namespace MVVM_WPF_Schedule.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FIO = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AvatarPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FIO = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Login = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    AvatarName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     PostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -107,7 +107,7 @@ namespace MVVM_WPF_Schedule.Migrations
                     Number = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsBudget = table.Column<bool>(type: "bit", nullable: false),
                     AdmissionYear = table.Column<int>(type: "int", nullable: false),
-                    SpecialtyCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    SpecialtyCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,7 +126,7 @@ namespace MVVM_WPF_Schedule.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SpecialtyCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SpecialtyCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DisciplineId = table.Column<int>(type: "int", nullable: false),
                     HoursCountPerWeek = table.Column<int>(type: "int", nullable: false)
                 },
@@ -311,7 +311,7 @@ namespace MVVM_WPF_Schedule.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "Email", "FIO", "Login", "Password", "Phone", "PostId" },
+                columns: new[] { "Id", "AvatarName", "Email", "FIO", "Login", "Password", "Phone", "PostId" },
                 values: new object[,]
                 {
                     { 1, "чебупеля.jpg", "ivanov@example.com", "Иванов Иван Иванович", "ivanov", "password123", "+79123456789", 1 },
@@ -414,6 +414,12 @@ namespace MVVM_WPF_Schedule.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Disciplines_Name",
+                table: "Disciplines",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Groups_SpecialtyCode",
                 table: "Groups",
                 column: "SpecialtyCode");
@@ -439,6 +445,12 @@ namespace MVVM_WPF_Schedule.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Posts_Name",
+                table: "Posts",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ScheduleItems_DayOfWeekId",
                 table: "ScheduleItems",
                 column: "DayOfWeekId");
@@ -449,6 +461,18 @@ namespace MVVM_WPF_Schedule.Migrations
                 column: "GroupDisciplineId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Specialties_Acronym",
+                table: "Specialties",
+                column: "Acronym",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Specialties_Name",
+                table: "Specialties",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SpecialtiesDisciplines_DisciplineId",
                 table: "SpecialtiesDisciplines",
                 column: "DisciplineId");
@@ -457,6 +481,24 @@ namespace MVVM_WPF_Schedule.Migrations
                 name: "IX_SpecialtiesDisciplines_SpecialtyCode",
                 table: "SpecialtiesDisciplines",
                 column: "SpecialtyCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_FIO",
+                table: "Users",
+                column: "FIO",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Login",
+                table: "Users",
+                column: "Login",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Phone",
+                table: "Users",
+                column: "Phone",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_PostId",

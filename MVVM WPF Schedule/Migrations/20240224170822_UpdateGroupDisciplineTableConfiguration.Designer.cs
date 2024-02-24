@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVVM_WPF_Schedule.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240224115521_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240224170822_UpdateGroupDisciplineTableConfiguration")]
+    partial class UpdateGroupDisciplineTableConfiguration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,9 +83,13 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Disciplines");
 
@@ -155,7 +159,8 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("SpecialtyCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Number");
 
@@ -216,6 +221,7 @@ namespace MVVM_WPF_Schedule.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("TeacherId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -229,6 +235,8 @@ namespace MVVM_WPF_Schedule.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("GroupsDisciplines");
+
+                    b.HasCheckConstraint("CHK_Hours_Count_Per_Week", "HoursCountPerWeek>0");
 
                     b.HasData(
                         new
@@ -403,9 +411,13 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Posts");
 
@@ -831,17 +843,26 @@ namespace MVVM_WPF_Schedule.Migrations
             modelBuilder.Entity("MVVM_WPF_Schedule.Models.Entities.Specialty", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Acronym")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Code");
+
+                    b.HasIndex("Acronym")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Specialties");
 
@@ -876,7 +897,8 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("SpecialtyCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -983,18 +1005,28 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("FIO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("Workload")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FIO")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
                     b.ToTable("Teachers");
+
+                    b.HasCheckConstraint("Workload_CHK", "Workload > 0 AND Workload <=36");
 
                     b.HasData(
                         new
@@ -1002,77 +1034,77 @@ namespace MVVM_WPF_Schedule.Migrations
                             Id = 1,
                             FIO = "Андреева Татьяна Эдуардовна",
                             Phone = "+7(923)456-78-90",
-                            Workload = 432
+                            Workload = 36
                         },
                         new
                         {
                             Id = 2,
                             FIO = "Трифонова Элина Марсовна",
                             Phone = "+7(998)765-43-21",
-                            Workload = 450
+                            Workload = 36
                         },
                         new
                         {
                             Id = 3,
                             FIO = "Нургалиева Альбина Шамсулловна",
                             Phone = "+7(955)555-55-55",
-                            Workload = 420
+                            Workload = 36
                         },
                         new
                         {
                             Id = 4,
                             FIO = "Рязанов Евгений Владимирович",
                             Phone = "+7(966)666-66-66",
-                            Workload = 420
+                            Workload = 36
                         },
                         new
                         {
                             Id = 5,
                             FIO = "Цыбина Евгений Александровна",
                             Phone = "+7(977)777-77-77",
-                            Workload = 370
+                            Workload = 36
                         },
                         new
                         {
                             Id = 6,
                             FIO = "Латыпова Лилия Азгамовна",
                             Phone = "+7(955)222-31-81",
-                            Workload = 422
+                            Workload = 36
                         },
                         new
                         {
                             Id = 7,
                             FIO = "Айметдинова Ульяна Александровна",
                             Phone = "+7(914)351-44-51",
-                            Workload = 360
+                            Workload = 30
                         },
                         new
                         {
                             Id = 8,
                             FIO = "Сайтуколова Ольга Ремовна",
                             Phone = "+7(971)581-24-35",
-                            Workload = 400
+                            Workload = 32
                         },
                         new
                         {
                             Id = 9,
                             FIO = "Челяева Ирина Валерьевна",
                             Phone = "+7(911)84-88-55",
-                            Workload = 360
+                            Workload = 36
                         },
                         new
                         {
                             Id = 10,
                             FIO = "Мавлекеева Лилия Эльдаровна",
                             Phone = "+7(982)84-73-12",
-                            Workload = 380
+                            Workload = 34
                         },
                         new
                         {
                             Id = 11,
                             FIO = "Cафиуллина Лейсан Маратовна",
                             Phone = "+7(951)55-26-71",
-                            Workload = 340
+                            Workload = 36
                         });
                 });
 
@@ -1084,34 +1116,49 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AvatarPath")
+                    b.Property<string>("AvatarName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FIO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FIO")
+                        .IsUnique();
+
+                    b.HasIndex("Login")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
 
                     b.HasIndex("PostId");
 
@@ -1121,7 +1168,7 @@ namespace MVVM_WPF_Schedule.Migrations
                         new
                         {
                             Id = 1,
-                            AvatarPath = "чебупеля.jpg",
+                            AvatarName = "чебупеля.jpg",
                             Email = "ivanov@example.com",
                             FIO = "Иванов Иван Иванович",
                             Login = "ivanov",
@@ -1132,7 +1179,7 @@ namespace MVVM_WPF_Schedule.Migrations
                         new
                         {
                             Id = 2,
-                            AvatarPath = "чебупеля.jpg",
+                            AvatarName = "чебупеля.jpg",
                             Email = "petrov@example.com",
                             FIO = "Петров Петр Петрович",
                             Login = "petrov",
@@ -1173,7 +1220,9 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.HasOne("MVVM_WPF_Schedule.Models.Entities.Teacher", "Teacher")
                         .WithMany()
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Discipline");
 

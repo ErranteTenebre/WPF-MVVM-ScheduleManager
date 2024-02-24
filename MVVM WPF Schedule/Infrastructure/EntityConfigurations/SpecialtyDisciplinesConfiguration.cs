@@ -8,9 +8,18 @@ public class SpecialtyDisciplinesConfiguration : IEntityTypeConfiguration<Specia
 {
     public void Configure(EntityTypeBuilder<SpecialtyDiscipline> builder)
     {
+        builder.HasKey(e => e.Id);
+
+        builder.Property(e => e.DisciplineId)
+            .IsRequired();
+
+        builder.Property(e => e.SpecialtyCode)
+            .IsRequired()
+            .HasMaxLength(50);
+
         builder.HasOne(sd => sd.Specialty)
             .WithMany()
-            .HasForeignKey(sd=>sd.SpecialtyCode);
+            .HasForeignKey(sd => sd.SpecialtyCode);
         builder.HasOne(sd => sd.Discipline)
             .WithMany()
             .HasForeignKey(sd => sd.DisciplineId);

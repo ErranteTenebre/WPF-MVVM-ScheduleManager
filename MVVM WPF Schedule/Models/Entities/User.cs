@@ -8,7 +8,7 @@ public class User : BaseModel
     public string Email { get; set; }
     public string Password { get; set; }
     public string Login { get; set; }
-    public string AvatarPath { get; set; }
+    public string AvatarName { get; set; }
     public int PostId { get; set; }
 
     public virtual Post Post { get; set; }

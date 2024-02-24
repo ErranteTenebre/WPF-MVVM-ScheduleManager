@@ -1,146 +1,139 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using FontAwesome.Sharp;
 using MVVM_WPF_Schedule.Views.Pages;
 using MVVM_WPF_Schedule.Views.Pages.Secretary;
 
-namespace MVVM_WPF_Schedule.Services
+namespace MVVM_WPF_Schedule.Services;
+
+public class SecretaryNavigationService : INotifyPropertyChanged
 {
-    public class SecretaryNavigationService
+    private UserControl _currentChildView;
+    private IconChar _icon;
+    private string _caption;
+
+    private bool isSpecialtiesViewChecked = true;
+    private bool isGroupsViewChecked = false;
+    private bool isTeachersViewChecked = false;
+    private bool isDisciplinesViewChecked = false;
+
+    public SecretaryNavigationService()
     {
-        public event EventHandler CurrentViewChanged;
+    }
 
-        private UserControl _currentChildView = new HomeView();
-        private IconChar _icon;
-        private string _caption;
-
-        private bool isHomeViewChecked = false;
-        private bool isSpecialtiesViewChecked = false;
-        private bool isGroupsViewChecked = false;
-        private bool isTeachersViewChecked = false;
-        private bool isDisciplinesViewChecked = false;
-
-        public UserControl CurrentChildView
+    public UserControl CurrentChildView
+    {
+        get { return _currentChildView; }
+        set
         {
-            get { return _currentChildView; }
-            set
-            {
-                _currentChildView = value;
-            }
+            _currentChildView = value;
+            OnPropertyChanged();
         }
+    }
 
-        public IconChar Icon
+    public IconChar Icon
+    {
+        get { return _icon; }
+        set
         {
-            get
-            {
-                return _icon;
-            }
-            set
-            {
-                _icon = value;
-            }
+            _icon = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string Caption
+    public string Caption
+    {
+        get { return _caption; }
+        set
         {
-            get
-            {
-                return _caption;
-            }
-            set
-            {
-                _caption = value;
-            }
+            _caption = value;
+            OnPropertyChanged();
         }
+    }
 
-        public bool IsHomeViewChecked
+    public bool IsSpecialtiesViewChecked
+    {
+        get { return isSpecialtiesViewChecked; }
+        set
         {
-            get { return isHomeViewChecked; }
-            set
+            isSpecialtiesViewChecked = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsGroupsViewChecked
+    {
+        get { return isGroupsViewChecked; }
+        set
+        {
+            isGroupsViewChecked = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDisciplinesViewChecked
+    {
+        get { return isDisciplinesViewChecked; }
+        set
+        {
+            isDisciplinesViewChecked = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsTeachersViewChecked
+    {
+        get { return isTeachersViewChecked; }
+        set
+        {
+            isTeachersViewChecked = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public void OnPropertyChanged([CallerMemberNameAttribute] string property = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+    }
+
+    public void ChangeCurrentChildView(UserControl newView, string caption, IconChar icon)
+    {
+        CurrentChildView = newView;
+        Caption = caption;
+        Icon = icon;
+        ChangeNavigationChecked();
+    }
+
+    private void ChangeNavigationChecked()
+    {
+        IsSpecialtiesViewChecked = false;
+        IsGroupsViewChecked = false;
+        IsTeachersViewChecked = false;
+        IsDisciplinesViewChecked = false;
+        switch (CurrentChildView)
+        {
+            case SpecialtiesView:
             {
-                isHomeViewChecked = value;
-                
+                isSpecialtiesViewChecked = true;
+                break;
             }
-        }
-
-        public bool IsSpecialtiesViewChecked
-        {
-            get { return isSpecialtiesViewChecked; }
-            set
+            case GroupsView:
             {
-                isSpecialtiesViewChecked = value;
+                isGroupsViewChecked = true;
+                break;
             }
-        }
-
-        public bool IsGroupsViewChecked
-        {
-            get { return isGroupsViewChecked; }
-            set
+            case TeachersView:
             {
-                isGroupsViewChecked = value;
+                isTeachersViewChecked = true;
+                break;
             }
-        }
-
-        public bool IsDisciplinesViewChecked
-        {
-            get { return isDisciplinesViewChecked; }
-            set
+            case DisciplinesView:
             {
-                isDisciplinesViewChecked = value;
-            }
-        }
-
-        public bool IsTeachersViewChecked
-        {
-            get { return isTeachersViewChecked; }
-            set
-            {
-                isTeachersViewChecked = value;
-            }
-        }
-
-        public void ChangeCurrentChildView(UserControl newView, string caption, IconChar icon)
-        {
-            CurrentChildView = newView;
-            Caption = caption;
-            Icon = icon;
-            ChangeNavigationChecked();
-            CurrentViewChanged.Invoke(this, EventArgs.Empty);
-        }
-
-        private void ChangeNavigationChecked()
-        {
-            IsHomeViewChecked = false;
-            IsSpecialtiesViewChecked = false;
-            IsGroupsViewChecked = false;
-            IsTeachersViewChecked = false;
-            IsDisciplinesViewChecked = false;
-            switch (CurrentChildView)
-            {
-                case HomeView:
-                {
-                    IsHomeViewChecked = true;
-                    break;
-                }
-                case SpecialtiesView:
-                {
-                    isSpecialtiesViewChecked = true;
-                    break;
-                }
-                case GroupsView:
-                {
-                    isGroupsViewChecked = true;
-                    break;
-                }
-                case TeachersView:
-                {
-                    isTeachersViewChecked = true;
-                    break;
-                }
-                case DisciplinesView:
-                {
-                    isDisciplinesViewChecked = true;
-                    break;
-                }
+                isDisciplinesViewChecked = true;
+                break;
             }
         }
     }

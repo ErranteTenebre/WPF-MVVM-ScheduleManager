@@ -91,7 +91,11 @@ public class DisciplinesViewModel : ViewModelBase
 
     private bool CanExecuteEditCommand(object obj)
     {
-        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder) return false;
+        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder)
+        {
+            MessageBox.Show("Выберите дисциплину");
+            return false;
+        }
         return true;
     }
 
@@ -111,7 +115,11 @@ public class DisciplinesViewModel : ViewModelBase
 
     private bool CanExecuteRemoveCommand(object obj)
     {
-        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder) return false;
+        if (SelectedItem == null || SelectedItem == CollectionView.NewItemPlaceholder)
+        {
+            MessageBox.Show("Выберит дисциплину");
+            return false;
+        }
         return true;
     }
 

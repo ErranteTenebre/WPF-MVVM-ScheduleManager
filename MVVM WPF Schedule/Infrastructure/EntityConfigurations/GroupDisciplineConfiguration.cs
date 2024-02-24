@@ -8,6 +8,16 @@ namespace MVVM_WPF_Schedule.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<GroupDiscipline> builder)
         {
+            builder.HasKey(e => e.Id);
+
+            builder.Property(e => e.DisciplineId)
+                .IsRequired();
+            builder.Property(e => e.TeacherId)
+                .IsRequired();
+
+            builder.Property(e => e.HoursCountPerWeek)
+                .IsRequired();
+
             builder.HasOne(gd => gd.Group)
                 .WithMany()
                 .HasForeignKey(gd => gd.GroupNumber);
@@ -17,6 +27,8 @@ namespace MVVM_WPF_Schedule.Infrastructure.EntityConfigurations
             builder.HasOne(gd => gd.Teacher)
                 .WithMany()
                 .HasForeignKey(gd => gd.TeacherId);
+
+            builder.HasCheckConstraint("CHK_Hours_Count_Per_Week", "HoursCountPerWeek>0");
         }
     }
 }

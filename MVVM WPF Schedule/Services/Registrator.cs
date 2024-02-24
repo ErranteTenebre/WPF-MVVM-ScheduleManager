@@ -26,10 +26,10 @@ public static class Registrator
         services.AddDbContext<AppDbContext>(options =>
     options.UseLazyLoadingProxies()
         .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        services.AddSingleton<SecretaryNavigationService>();
         services.RegisterRepositories();
         services.RegisterDataValidators();
         services.RegisterViewModels();
+        services.AddTransient<SecretaryNavigationService>();
         return services;
     }
 

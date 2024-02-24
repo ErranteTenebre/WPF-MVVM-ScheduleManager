@@ -135,9 +135,9 @@ public class DispatcherViewModel : ViewModelBase
             FIO = user.FIO,
         };
 
-        if (user.AvatarPath != null)
+        if (user.AvatarName != null)
         {
-            byte[] avatar = File.ReadAllBytes(App.CurrentDirectory + "/Images/Avatars/" + user.AvatarPath);
+            byte[] avatar = File.ReadAllBytes(App.CurrentDirectory + "/Images/Avatars/" + user.AvatarName);
             CurrentUser.Avatar = avatar;
         }
     }

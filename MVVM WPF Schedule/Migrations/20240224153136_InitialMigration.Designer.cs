@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVVM_WPF_Schedule.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240224120234_AddPostConfiguration")]
-    partial class AddPostConfiguration
+    [Migration("20240224153136_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,9 +83,13 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Disciplines");
 
@@ -155,7 +159,8 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("SpecialtyCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Number");
 
@@ -403,9 +408,13 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Posts");
 
@@ -831,17 +840,26 @@ namespace MVVM_WPF_Schedule.Migrations
             modelBuilder.Entity("MVVM_WPF_Schedule.Models.Entities.Specialty", b =>
                 {
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Acronym")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Code");
+
+                    b.HasIndex("Acronym")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Specialties");
 
@@ -876,7 +894,8 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     b.Property<string>("SpecialtyCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -1084,34 +1103,49 @@ namespace MVVM_WPF_Schedule.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AvatarPath")
+                    b.Property<string>("AvatarName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FIO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FIO")
+                        .IsUnique();
+
+                    b.HasIndex("Login")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
 
                     b.HasIndex("PostId");
 
@@ -1121,7 +1155,7 @@ namespace MVVM_WPF_Schedule.Migrations
                         new
                         {
                             Id = 1,
-                            AvatarPath = "чебупеля.jpg",
+                            AvatarName = "чебупеля.jpg",
                             Email = "ivanov@example.com",
                             FIO = "Иванов Иван Иванович",
                             Login = "ivanov",
@@ -1132,7 +1166,7 @@ namespace MVVM_WPF_Schedule.Migrations
                         new
                         {
                             Id = 2,
-                            AvatarPath = "чебупеля.jpg",
+                            AvatarName = "чебупеля.jpg",
                             Email = "petrov@example.com",
                             FIO = "Петров Петр Петрович",
                             Login = "petrov",
